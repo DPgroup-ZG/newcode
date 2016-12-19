@@ -9,6 +9,7 @@
 #include "MemoryManagement2.0.h"
 #include "DIALOG2.h"
 #include "afxdialogex.h"
+#include "State.h"
 
 using namespace std;
 
@@ -419,24 +420,35 @@ void DIALOG2::OnBnClickedButton1()
 
 void DIALOG2::OnBnClickedButton2()
 {
+	RealRun *relr;
 	switch (select_algorithm)
 	{
 	case 0:
 		init();
 		display2 = display2 + "最佳置换算法OPT:\r\n";
-		OPT();
+		relr = new RealRun(new OPTState(), this);
+		relr->GetState();
+		delete relr;
+		//OPT();
 		break;
 	case 1:
 		init();
 		display2 = display2 + "最近最久未使用置换算法LRU:\r\n";
-		LRU();
+		//LRU();
+		relr = new RealRun(new LRUState(), this);
+		relr->GetState();
+		delete relr;
 		break;
 	case 2:
 		init();
 		display2 = display2 + "先进先出置换算法FIFO:\r\n";
-		FIFO();
+		//FIFO();
+		relr = new RealRun(new FIFOState(), this);
+		relr->GetState();
+		delete relr;
 		break;
 
 	default:;
 	}
+	
 }

@@ -9,18 +9,21 @@
 class CMemoryManagement20Dlg : public CDialogEx
 {
 // 构造
-public:
+private:
 	CMemoryManagement20Dlg(CWnd* pParent = NULL);	// 标准构造函数
+	static CMemoryManagement20Dlg *singleton;
 
+public:
 	afx_msg void OnBnClickedButton1();
 	afx_msg void OnBnClickedButton2();
+	//	单例模式
+	static CMemoryManagement20Dlg* GetInstance();
 
 // 对话框数据
 #ifdef AFX_DESIGN_TIME
 	enum { IDD = IDD_MEMORYMANAGEMENT20_DIALOG };
 #endif
 
-// 实现
 protected:
 
 	virtual void DoDataExchange(CDataExchange* pDX);	// DDX/DDV 支持

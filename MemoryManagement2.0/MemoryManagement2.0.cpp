@@ -72,9 +72,9 @@ BOOL CMemoryManagement20App::InitInstance()
 	SetRegistryKey(_T("应用程序向导生成的本地应用程序"));
 
 	//将dlg对话框设为主对话框（最先跳出来的对话框）
-	CMemoryManagement20Dlg dlg;
-	m_pMainWnd = &dlg;
-	INT_PTR nResponse = dlg.DoModal();
+	CMemoryManagement20Dlg *dlg = CMemoryManagement20Dlg::GetInstance();
+	m_pMainWnd = dlg;
+	INT_PTR nResponse = dlg->DoModal();
 	if (nResponse == IDOK)
 	{
 		// TODO: 在此放置处理何时用

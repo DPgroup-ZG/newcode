@@ -5,14 +5,15 @@
 #include "stdafx.h"
 #include "MemoryManagement2.0.h"
 #include "MemoryManagement2.0Dlg.h"
-#include "DIALOG1.h"
-#include "DIALOG2.h"
+#include "SingleFactory.h"
 #include "afxdialogex.h"
 
 #ifdef _DEBUG
 #define new DEBUG_NEW
 #endif
 
+
+CMemoryManagement20Dlg* CMemoryManagement20Dlg::singleton = NULL;
 
 // 用于应用程序“关于”菜单项的 CAboutDlg 对话框
 
@@ -156,18 +157,27 @@ HCURSOR CMemoryManagement20Dlg::OnQueryDragIcon()
 	return static_cast<HCURSOR>(m_hIcon);
 }
 
-
+CMemoryManagement20Dlg* CMemoryManagement20Dlg::GetInstance()
+{
+	if (singleton == NULL)
+		singleton = new CMemoryManagement20Dlg();
+	return singleton;
+}
 
 
 void CMemoryManagement20Dlg::OnBnClickedButton1()
 {
-	DIALOG1 dlg1;
-	dlg1.DoModal();
+	Factory factory;
+	SingleCore* single = factory.CreateSingleCore(DIALOG_1);
+	single->Show();
 }
 
 
 void CMemoryManagement20Dlg::OnBnClickedButton2()
 {
-	DIALOG2 dlg2;
-	dlg2.DoModal();
+	Factory factory;
+	SingleCore* single = factory.CreateSingleCore(DIALOG_2);
+	single->Show();
 }
+
+

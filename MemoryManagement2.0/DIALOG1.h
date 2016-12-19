@@ -40,6 +40,7 @@ public:
 	CString displayText;					//分区信息展示区
 	BOOL FirstFit_or_not;					//是否首次适应算法
 	BOOL BestFit_or_not;					//是否最佳适应算法
+	void AllocateMemory(int workNo, int size);//分配内存
 
 	afx_msg void OnBnClickedButton1();//确认申请空间按钮
 	afx_msg void OnBnClickedButton2();//确认释放空间按钮
@@ -53,7 +54,7 @@ public:
 
 private:
 	void Display();	//显示当前分区信息
-	void AllocateMemory(int workNo, int size);//分配内存
+	
 	void FreeMemory(int workNo);//释放内存
 
 	int Step;//记录自动演示的演示步骤

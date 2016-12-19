@@ -7,6 +7,8 @@
 #include "MemoryManagement2.0Dlg.h"
 #include "DIALOG1.h"
 #include "afxdialogex.h"
+#include "Strategy.h"
+#include "Proxy.h"
 
 
 // DIALOG1 对话框
@@ -173,7 +175,10 @@ void DIALOG1::OnBnClickedButton1()
 	UpdateData();	//根据控件值更新变量
 	if (workSize <= 640)
 	{
-		AllocateMemory(workNum, workSize);
+		//AllocateMemory(workNum, workSize);
+		IMemMalloc *imalloc = new RealMallocProxy(this, workNum, workSize); //代理  
+		imalloc->AllocateMemory(); //需要时由代理负责打开  
+		delete imalloc;
 	}
 	else
 	{
@@ -278,11 +283,15 @@ void DIALOG1::AllocateMemory(int workNo, int size)
 {
 	if (FirstFit_or_not == TRUE)
 	{
-		Mem.FirstFit(workNo, size);// 首次适应算法
+		Cache cache(FIRSTFIT);
+		cache.Alloc(&Mem, workNo, size);
+		//Mem.FirstFit(workNo, size);// 首次适应算法
 	}
 	else if (BestFit_or_not == TRUE)
 	{
-		Mem.BestFit(workNo, size);// 最佳适应算法
+		Cache cache(BESTFIT);
+		cache.Alloc(&Mem, workNo, size);
+		//Mem.BestFit(workNo, size);// 最佳适应算法
 	}
 	Display();
 }
