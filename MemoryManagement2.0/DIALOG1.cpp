@@ -11,6 +11,7 @@
 #include "Proxy.h"
 
 
+
 // DIALOG1 对话框
 
 IMPLEMENT_DYNAMIC(DIALOG1, CDialogEx)
@@ -283,15 +284,13 @@ void DIALOG1::AllocateMemory(int workNo, int size)
 {
 	if (FirstFit_or_not == TRUE)
 	{
-		Cache cache(FIRSTFIT);
-		cache.Alloc(&Mem, workNo, size);
-		//Mem.FirstFit(workNo, size);// 首次适应算法
+		Cache cache(FIRSTFIT);// 首次适应算法
+		cache.CacheAlloc(&Mem, workNo, size);
 	}
 	else if (BestFit_or_not == TRUE)
 	{
-		Cache cache(BESTFIT);
-		cache.Alloc(&Mem, workNo, size);
-		//Mem.BestFit(workNo, size);// 最佳适应算法
+		Cache cache(BESTFIT);// 最佳适应算法
+		cache.CacheAlloc(&Mem, workNo, size);
 	}
 	Display();
 }

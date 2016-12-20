@@ -45,7 +45,7 @@ public:
 			m_aa = NULL;
 	}
 	~Cache() { delete m_aa; }
-	void Alloc(Memory* mem, int workNo, int size)
+	void CacheAlloc(Memory* mem, int workNo, int size)
 	{ 
 		m_aa->Alloc(mem, workNo, size);
 	}

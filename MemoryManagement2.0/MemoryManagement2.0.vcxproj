@@ -191,6 +191,7 @@
   <ItemGroup>
     <ClInclude Include="DIALOG1.h" />
     <ClInclude Include="DIALOG2.h" />
+    <ClInclude Include="Iterator.h" />
     <ClInclude Include="Memory.h" />
     <ClInclude Include="MemoryManagement2.0.h" />
     <ClInclude Include="MemoryManagement2.0Dlg.h" />

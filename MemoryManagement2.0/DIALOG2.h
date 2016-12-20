@@ -1,7 +1,10 @@
 #pragma once
 
-#define Bsize 4
 
+#include "Iterator.h"
+#include <vector>
+using namespace std;
+#define Bsize 4
 typedef struct BLOCK//声明一种新类型--物理块类型
 {
 	int pagenum;//页号
@@ -41,8 +44,9 @@ public:
 
 	int pc;//程序计数器，用来记录指令的序号
 	int n;//缺页计数器，用来记录缺页的次数	
-	int temp[320];//用来存储320条随机数
 	int select_algorithm=0;//选择哪种置换算法
+	//迭代器模式
+	Aggregate* ca = NULL;
 
 	CString display1="";//显示对应的调用页面队列
 	CString display3 = "";//显示对应的调用页面队列

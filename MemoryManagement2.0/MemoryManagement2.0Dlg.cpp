@@ -12,7 +12,7 @@
 #define new DEBUG_NEW
 #endif
 
-
+//单例模式
 CMemoryManagement20Dlg* CMemoryManagement20Dlg::singleton = NULL;
 
 // 用于应用程序“关于”菜单项的 CAboutDlg 对话框
@@ -157,6 +157,7 @@ HCURSOR CMemoryManagement20Dlg::OnQueryDragIcon()
 	return static_cast<HCURSOR>(m_hIcon);
 }
 
+//单例模式
 CMemoryManagement20Dlg* CMemoryManagement20Dlg::GetInstance()
 {
 	if (singleton == NULL)

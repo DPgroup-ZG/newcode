@@ -10,6 +10,7 @@
 #include "DIALOG2.h"
 #include "afxdialogex.h"
 #include "State.h"
+#include "Iterator.h"
 
 using namespace std;
 
@@ -83,13 +84,6 @@ BOOL DIALOG2::OnInitDialog()
 									// TODO:  在此添加额外的初始化代码
 	((CButton *)GetDlgItem(IDC_RADIO1))->SetCheck(TRUE);//把OPT的按钮设为默认按下状态
 
-	for (int i = 0; i<Bsize; i++)
-	{
-		block[i].pagenum = -1;
-		block[i].accessed = 0;
-		pc = n = 0;
-	}
-
 	return TRUE;  // 除非将焦点设置到控件，否则返回 TRUE
 }
 
@@ -125,7 +119,12 @@ HCURSOR DIALOG2::OnQueryDragIcon()
 
 void DIALOG2::init()
 {
-
+	for (int i = 0; i<Bsize; i++)
+	{
+		block[i].pagenum = -1;
+		block[i].accessed = 0;
+		pc = n = 0;
+	}
 }
 
 int DIALOG2::findExist(int curpage)
@@ -170,7 +169,6 @@ void DIALOG2::display()
 		{
 			CString str;
 			str.Format(" %02d", block[i].pagenum);
-			//printf(" %02d", block[i].pagenum);
 			display2 = display2 + str;
 		}
 	}
@@ -181,43 +179,50 @@ void DIALOG2::suijishu()
 {
 	UpdateData();	//根据控件值更新变量
 	int flag = 0;
-//	cin >> pc;
 	display1 = display1 + "******按照要求产生的320个随机数：*******\r\n";
+
+	ca = new ConcreteAggregate();
+
 	for (int i = 0; i<320; i++)
 	{
 		CString str;
-		temp[i] = pc;
+		ca->Push(pc);
+
 		if (flag % 2 == 0) pc = ++pc % 320;
 		if (flag == 1) pc = rand() % (pc - 1);
 		if (flag == 3) pc = pc + 1 + (rand() % (320 - (pc + 1)));
 		flag = ++flag % 4;
-		str.Format(" %03d", temp[i]);
+		str.Format(" %03d", ca->Pop(i));
 		display1 = display1 + str;
-		//printf(" %03d", temp[i]);
-		if ((i + 1) % 10 == 0) 
-		{ 
-			display1=display1 + "\r\n";
+		if ((i + 1) % 10 == 0)
+		{
+			display1 = display1 + "\r\n";
 		}
 	}
+
 	UpdateData(FALSE);				// 根据变量值更新控件
 	pagestring();
 }
+
 
 void DIALOG2::pagestring()
 {
 	UpdateData();	//根据控件值更新变量
 	display3 = display3 + "*****对应的调用页面队列*******\r\n";
-	//cout << "*****对应的调用页面队列*******" << endl;
-	for (int i = 0; i<320; i++)
-	{
-		CString str;
-		str.Format(" %02d", temp[i] / 10);
-		//printf(" %02d", temp[i] / 10);
-		display3 = display3 + str;
-		if ((i + 1) % 10 == 0) {
-			display3 = display3 + "\r\n";
+
+	Iterator* iter = NULL;
+	iter = ca->CreateIterator();
+
+	if (NULL != iter) {
+		while (!iter->IsEnd())
+		{
+			CString str;
+			str.Format(" %02d", (iter->GetCur()) / 10);
+			display3 = display3 + str;
+			iter->Next();
 		}
 	}
+
 	UpdateData(FALSE);				// 根据变量值更新控件
 }
 
@@ -229,7 +234,8 @@ void DIALOG2::OPT()
 	for (int i = 0; i<320; i++)
 	{
 		if (i % 100 == 0) getchar();
-		pc = temp[i];
+		//pc = temp[i];
+		pc=ca->Pop(i);
 		curpage = pc / 10;
 		exist = findExist(curpage);
 		if (exist == -1)
@@ -247,7 +253,8 @@ void DIALOG2::OPT()
 				{
 					for (int j = i; j<320; j++)
 					{
-						if (block[k].pagenum != temp[j] / 10)
+						//if (block[k].pagenum != temp[j] / 10)
+						if(block[k].pagenum!= ca->Pop(j)/10)
 						{
 							block[k].accessed = 1000;
 						}//将来不会用，设置为一个很大数
@@ -271,9 +278,7 @@ void DIALOG2::OPT()
 	str1.Format("%d",n);
 	str2.Format("%.4f", (n / 320.0) * 100);
 	display2 = display2 + "缺页次数:" + str1 + "\r\n";
-	//cout << "缺页次数:" << n << endl;
 	display2 = display2 +"缺页率:"+ str2+ "%"+ "\r\n";
-	//cout << "缺页率:" << (n / 320.0) * 100 << "%" << endl;
 
 	UpdateData(FALSE);				// 根据变量值更新控件
 }
@@ -286,7 +291,8 @@ void DIALOG2::LRU()
 	for (int i = 0; i<320; i++)
 	{
 		if (i % 100 == 0) getchar();
-		pc = temp[i];
+		//pc = temp[i];
+		pc = ca->Pop(i);
 		curpage = pc / 10;
 		exist = findExist(curpage);
 		if (exist == -1)
@@ -318,9 +324,7 @@ void DIALOG2::LRU()
 	str1.Format("%d", n);
 	str2.Format("%.4f", (n / 320.0) * 100);
 	display2 = display2 + "缺页次数:" + str1 + "\r\n";
-	//cout << "缺页次数:" << n << endl;
 	display2 = display2 + "缺页率:" + str2 + "%" + "\r\n";
-	//cout << "缺页率:" << (n / 320.0) * 100 << "%" << endl;
 
 	UpdateData(FALSE);				// 根据变量值更新控件
 }
@@ -333,7 +337,8 @@ void DIALOG2::FIFO()
 	for (int i = 0; i<320; i++)
 	{
 		if (i % 100 == 0) getchar();
-		pc = temp[i];
+		//pc = temp[i];
+		pc = ca->Pop(i);
 		curpage = pc / 10;
 
 		exist = findExist(curpage);
@@ -365,9 +370,7 @@ void DIALOG2::FIFO()
 	str1.Format("%d", n);
 	str2.Format("%.4f", (n / 320.0) * 100);
 	display2 = display2 + "缺页次数:" + str1 + "\r\n";
-	//cout << "缺页次数:" << n << endl;
 	display2 = display2 + "缺页率:" + str2 + "%" + "\r\n";
-	//cout << "缺页率:" << (n / 320.0) * 100 << "%" << endl;
 
 	UpdateData(FALSE);				// 根据变量值更新控件
 }
@@ -377,23 +380,18 @@ void DIALOG2::FIFO()
 
 void DIALOG2::OnEnChangeEdit1()
 {
-
 }
-
 
 void DIALOG2::OnEnChangeEdit2()
 {
-
 }
 
 void DIALOG2::OnEnChangeEdit3()
 {
-
 }
 
 void DIALOG2::OnEnChangeEdit4()
 {
-
 }
 
 void DIALOG2::OnBnClickedRadio1()
@@ -418,6 +416,8 @@ void DIALOG2::OnBnClickedButton1()
 	suijishu();
 }
 
+
+//状态模式
 void DIALOG2::OnBnClickedButton2()
 {
 	RealRun *relr;
@@ -429,12 +429,10 @@ void DIALOG2::OnBnClickedButton2()
 		relr = new RealRun(new OPTState(), this);
 		relr->GetState();
 		delete relr;
-		//OPT();
 		break;
 	case 1:
 		init();
 		display2 = display2 + "最近最久未使用置换算法LRU:\r\n";
-		//LRU();
 		relr = new RealRun(new LRUState(), this);
 		relr->GetState();
 		delete relr;
@@ -442,13 +440,10 @@ void DIALOG2::OnBnClickedButton2()
 	case 2:
 		init();
 		display2 = display2 + "先进先出置换算法FIFO:\r\n";
-		//FIFO();
 		relr = new RealRun(new FIFOState(), this);
 		relr->GetState();
 		delete relr;
 		break;
-
 	default:;
 	}
-	
 }

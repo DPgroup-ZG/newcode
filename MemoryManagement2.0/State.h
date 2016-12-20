@@ -1,5 +1,6 @@
 #ifndef STATE_H_
 #define STATE_H_
+
 //	状态模式
 
 class RealRun;
