@@ -64,11 +64,11 @@ public:
 	int findSpace();//查找是否有空闲物理块
 	int findReplace();//查找应予置换的页面
 	void display();//显示
-	void suijishu();//产生320条随机数,显示并存储到temp[320]
+	void suijishu();//产生320条随机数
 	void pagestring();//显示调用的页面队列
-	void OPT();//OPT算法
-	void LRU();// LRU算法
-	void FIFO();//FIFO算法
+	void OPT();//OPT算法（最佳置换算法）
+	void LRU();// LRU算法（最近最久未使用置换算法）
+	void FIFO();//FIFO算法（先进先出置换算法）
 	afx_msg void OnBnClickedButton1();
 	afx_msg void OnEnChangeEdit4();
 	afx_msg void OnBnClickedButton2();

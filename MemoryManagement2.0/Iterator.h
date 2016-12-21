@@ -5,6 +5,7 @@
 #include "Iterator.h"
 using namespace std;
 
+//µü´úÆ÷Ä£Ê½
 class Iterator
 {
 public:

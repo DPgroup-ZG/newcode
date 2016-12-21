@@ -210,9 +210,11 @@ void DIALOG2::pagestring()
 	UpdateData();	//根据控件值更新变量
 	display3 = display3 + "*****对应的调用页面队列*******\r\n";
 
+	//迭代器模式
 	Iterator* iter = NULL;
 	iter = ca->CreateIterator();
 
+	int t=0;
 	if (NULL != iter) {
 		while (!iter->IsEnd())
 		{
@@ -220,6 +222,11 @@ void DIALOG2::pagestring()
 			str.Format(" %02d", (iter->GetCur()) / 10);
 			display3 = display3 + str;
 			iter->Next();
+			if ((t + 1) % 10 == 0)
+			{
+				display3 = display3 + "\r\n";
+			}
+			t++;
 		}
 	}
 
@@ -253,7 +260,6 @@ void DIALOG2::OPT()
 				{
 					for (int j = i; j<320; j++)
 					{
-						//if (block[k].pagenum != temp[j] / 10)
 						if(block[k].pagenum!= ca->Pop(j)/10)
 						{
 							block[k].accessed = 1000;
@@ -337,7 +343,6 @@ void DIALOG2::FIFO()
 	for (int i = 0; i<320; i++)
 	{
 		if (i % 100 == 0) getchar();
-		//pc = temp[i];
 		pc = ca->Pop(i);
 		curpage = pc / 10;
 
@@ -361,10 +366,10 @@ void DIALOG2::FIFO()
 				block[position].accessed--;
 			}
 		}
-		for (int j = 0; j<Bsize; j++)
+		for (int j = 0; j < Bsize; j++)
+		{
 			block[j].accessed++;
-
-
+		}
 	}
 	CString str1, str2;
 	str1.Format("%d", n);
