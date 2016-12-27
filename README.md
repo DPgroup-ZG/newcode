@@ -588,6 +588,5 @@ _DIALOG2.cpp_
 ## 可执行文件
 https://github.com/DPgroup-ZG/newcode/blob/master/MemoryManagement2.0.exe
 
-## 成员分工  
-张鸿羽：策略模式、状态模式、迭代器模式  
-郭梦晗：单例模式（2处）、工厂模式、代理模式  
+## 成员工作分配比例
+1：1
